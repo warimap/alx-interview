@@ -33,5 +33,6 @@ def main():
     print_stats(file_size, status_codes)
 
 if __name__ == "__main__":
-    main()
+    main() 
+    
 
