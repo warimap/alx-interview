@@ -1,34 +1,42 @@
 #!/usr/bin/python3
-""" Prime Game """
+"""0. Prime Game - Maria and Ben are playing a game"""
 
 
-def generatePrimeNumbers(limit):
-    """Generate list of primes up to limit"""
-    primeNumbers = []
-    sieveList = [True] * (limit + 1)
-    for potentialPrime in range(2, limit + 1):
-        if sieveList[potentialPrime]:
-            primeNumbers.append(potentialPrime)
-            for multiple in range(potentialPrime, limit + 1, potentialPrime):
-                sieveList[multiple] = False
-    return primeNumbers
-
-
-def isWinner(numRounds, roundValues):
+def isWinner(x, nums):
+    """x - rounds
+    nums - numbers list
     """
-    Determine the winner of the game
-    """
-    if not numRounds or not roundValues:
+    if x <= 0 or nums is None:
         return None
-    mariaScore = benScore = 0
-    for i in range(numRounds):
-        primes = generatePrimeNumbers(roundValues[i])
-        if len(primes) % 2 == 0:
-            benScore += 1
+    if x != len(nums):
+        return None
+
+    ben = 0
+    maria = 0
+
+    a = [1 for x in range(sorted(nums)[-1] + 1)]
+    a[0], a[1] = 0, 0
+    for i in range(2, len(a)):
+        rm_multiples(a, i)
+
+    for i in nums:
+        if sum(a[0:i + 1]) % 2 == 0:
+            ben += 1
         else:
-            mariaScore += 1
-    if mariaScore > benScore:
-        return "Maria"
-    elif benScore > mariaScore:
+            maria += 1
+    if ben > maria:
         return "Ben"
+    if maria > ben:
+        return "Maria"
     return None
+
+
+def rm_multiples(ls, x):
+    """removes multiple
+    of primes
+    """
+    for i in range(2, len(ls)):
+        try:
+            ls[i * x] = 0
+        except (ValueError, IndexError):
+            break
